@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { createPageUrl } from "./utils";
+import { createPageUrl } from "../utils";
 import { 
   Menu, 
   X, 
@@ -12,14 +12,14 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import { LanguageProvider, useLanguage } from "./components/shared/LanguageContext";
+import { LanguageProvider, useLanguage } from "@/components/shared/LanguageContext";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
-import SocialBubble from "./components/shared/SocialBubble";
-import CookieConsent from "./components/shared/CookieConsent";
-import ScrollToTop from "./components/shared/ScrollToTop";
-import FoldedCorner from "./components/shared/FoldedCorner";
-import SeasonalEffects from "./components/shared/SeasonalEffects";
+import SocialBubble from "@/components/shared/SocialBubble";
+import CookieConsent from "@/components/shared/CookieConsent";
+import ScrollToTop from "@/components/shared/ScrollToTop";
+import FoldedCorner from "@/components/shared/FoldedCorner";
+import SeasonalEffects from "@/components/shared/SeasonalEffects";
 
 function LayoutContent({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
