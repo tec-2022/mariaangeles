@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Mail, Trash2, UserCheck, UserX, Download, Search, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -24,16 +24,16 @@ export default function AdminSubscribers() {
 
   const { data: subscribers = [], isLoading } = useQuery({
     queryKey: ['admin-subscribers'],
-    queryFn: () => base44.entities.Subscriber.list('-created_date')
+    queryFn: () => contentClient.entities.Subscriber.list('-created_date')
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Subscriber.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.Subscriber.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-subscribers'] })
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Subscriber.delete(id),
+    mutationFn: (id) => contentClient.entities.Subscriber.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-subscribers'] });
       setDeleteId(null);

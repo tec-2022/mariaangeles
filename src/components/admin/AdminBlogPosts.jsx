@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, Eye, EyeOff, Star, StarOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -35,11 +35,11 @@ export default function AdminBlogPosts() {
 
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['admin-blog-posts'],
-    queryFn: () => base44.entities.BlogPost.list('-created_date')
+    queryFn: () => contentClient.entities.BlogPost.list('-created_date')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.BlogPost.create(data),
+    mutationFn: (data) => contentClient.entities.BlogPost.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] });
       handleCloseDialog();
@@ -47,7 +47,7 @@ export default function AdminBlogPosts() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.BlogPost.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.BlogPost.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] });
       handleCloseDialog();
@@ -55,7 +55,7 @@ export default function AdminBlogPosts() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.BlogPost.delete(id),
+    mutationFn: (id) => contentClient.entities.BlogPost.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-blog-posts'] });
     }
@@ -123,9 +123,9 @@ export default function AdminBlogPosts() {
 
     // Send notifications to subscribers when publishing
     if (isNewPublish) {
-      const subscribers = await base44.entities.Subscriber.filter({ active: true });
+      const subscribers = await contentClient.entities.Subscriber.filter({ active: true });
       for (const sub of subscribers) {
-        base44.integrations.Core.SendEmail({
+        contentClient.integrations.Core.SendEmail({
           to: sub.email,
           subject: `Nuevo artículo: ${dataToSave.title}`,
           body: `

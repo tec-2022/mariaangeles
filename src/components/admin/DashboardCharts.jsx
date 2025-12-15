@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line, CartesianGrid, Legend } from "recharts";
 import { Card } from "@/components/ui/card";
@@ -13,14 +13,14 @@ export default function DashboardCharts() {
   const [aiInsights, setAiInsights] = useState(null);
   const [loadingInsights, setLoadingInsights] = useState(false);
 
-  const { data: blogPosts = [] } = useQuery({ queryKey: ['charts-blogs'], queryFn: () => base44.entities.BlogPost.list() });
-  const { data: events = [] } = useQuery({ queryKey: ['charts-events'], queryFn: () => base44.entities.Event.list() });
-  const { data: publications = [] } = useQuery({ queryKey: ['charts-pubs'], queryFn: () => base44.entities.Publication.list() });
-  const { data: episodes = [] } = useQuery({ queryKey: ['charts-episodes'], queryFn: () => base44.entities.PodcastEpisode.list() });
-  const { data: analytics = [] } = useQuery({ queryKey: ['charts-analytics'], queryFn: () => base44.entities.AnalyticsEvent.list('-created_date', 5000) });
-  const { data: messages = [] } = useQuery({ queryKey: ['charts-messages'], queryFn: () => base44.entities.ContactMessage.list() });
-  const { data: comments = [] } = useQuery({ queryKey: ['charts-comments'], queryFn: () => base44.entities.Comment.list() });
-  const { data: subscribers = [] } = useQuery({ queryKey: ['charts-subs'], queryFn: () => base44.entities.Subscriber.list() });
+  const { data: blogPosts = [] } = useQuery({ queryKey: ['charts-blogs'], queryFn: () => contentClient.entities.BlogPost.list() });
+  const { data: events = [] } = useQuery({ queryKey: ['charts-events'], queryFn: () => contentClient.entities.Event.list() });
+  const { data: publications = [] } = useQuery({ queryKey: ['charts-pubs'], queryFn: () => contentClient.entities.Publication.list() });
+  const { data: episodes = [] } = useQuery({ queryKey: ['charts-episodes'], queryFn: () => contentClient.entities.PodcastEpisode.list() });
+  const { data: analytics = [] } = useQuery({ queryKey: ['charts-analytics'], queryFn: () => contentClient.entities.AnalyticsEvent.list('-created_date', 5000) });
+  const { data: messages = [] } = useQuery({ queryKey: ['charts-messages'], queryFn: () => contentClient.entities.ContactMessage.list() });
+  const { data: comments = [] } = useQuery({ queryKey: ['charts-comments'], queryFn: () => contentClient.entities.Comment.list() });
+  const { data: subscribers = [] } = useQuery({ queryKey: ['charts-subs'], queryFn: () => contentClient.entities.Subscriber.list() });
 
   // Content distribution data
   const contentData = [
@@ -117,7 +117,7 @@ export default function DashboardCharts() {
       const totalViews = blogPosts.reduce((sum, p) => sum + (p.views || 0), 0);
       const totalLikes = blogPosts.reduce((sum, p) => sum + (p.likes || 0), 0);
 
-      const result = await base44.integrations.Core.InvokeLLM({
+      const result = await contentClient.integrations.Core.InvokeLLM({
         prompt: `Eres un analista de datos para el sitio web de un investigador académico. Analiza estos datos y da 3 insights breves y accionables:
 
 DATOS:

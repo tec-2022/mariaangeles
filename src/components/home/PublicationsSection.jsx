@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../../utils";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { FileText, BookOpen, Newspaper, Users, Award, File } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -13,7 +13,7 @@ export default function PublicationsSection() {
   
   const { data: publications = [] } = useQuery({
     queryKey: ['home-publications'],
-    queryFn: () => base44.entities.Publication.list('-year', 3)
+    queryFn: () => contentClient.entities.Publication.list('-year', 3)
   });
 
   const getTypeIcon = (type) => {

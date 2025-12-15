@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { Calendar, Clock, MapPin, Users, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -20,7 +20,7 @@ export default function Events() {
   // Fetch events from database
   const { data: events = [], isLoading } = useQuery({
     queryKey: ['events-page'],
-    queryFn: () => base44.entities.Event.list('-date')
+    queryFn: () => contentClient.entities.Event.list('-date')
   });
 
   const upcomingEvents = events.filter(e => e.is_upcoming);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight, Mail, Linkedin, ExternalLink, Star, Users, X, Send, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -22,7 +22,7 @@ export default function ResearchTeamCarousel() {
 
   const { data: researchers = [], isLoading } = useQuery({
     queryKey: ['researchers'],
-    queryFn: () => base44.entities.Researcher.list('order')
+    queryFn: () => contentClient.entities.Researcher.list('order')
   });
 
   // Auto-advance carousel solo si hay más de 1 researcher
@@ -50,7 +50,7 @@ export default function ResearchTeamCarousel() {
     e.preventDefault();
     setSending(true);
     
-    await base44.entities.ContactMessage.create({
+    await contentClient.entities.ContactMessage.create({
       name: emailForm.name,
       email: emailForm.email,
       subject: `[Para: ${currentResearcher?.name}] ${emailForm.subject}`,

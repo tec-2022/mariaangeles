@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { Camera, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -18,7 +18,7 @@ export default function Gallery() {
   // Fetch images from database
   const { data: dbImages = [] } = useQuery({
     queryKey: ['gallery-images'],
-    queryFn: () => base44.entities.GalleryImage.list('order')
+    queryFn: () => contentClient.entities.GalleryImage.list('order')
   });
 
   const categories = ["all", "Conferencias", "Seminarios", "Docencia", "Investigación"];

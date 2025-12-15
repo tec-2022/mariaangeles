@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, Briefcase, GraduationCap, Award, BookOpen, Globe } from "lucide-react";
 import { autoTranslate } from "./AutoTranslate";
@@ -36,13 +36,13 @@ export default function AdminAbout() {
 
   const { data: aboutItems = [], isLoading } = useQuery({
     queryKey: ['admin-about'],
-    queryFn: () => base44.entities.AboutContent.list('order')
+    queryFn: () => contentClient.entities.AboutContent.list('order')
   });
 
 
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.AboutContent.create(data),
+    mutationFn: (data) => contentClient.entities.AboutContent.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-about'] });
       handleCloseDialog();
@@ -50,7 +50,7 @@ export default function AdminAbout() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.AboutContent.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.AboutContent.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-about'] });
       handleCloseDialog();
@@ -58,7 +58,7 @@ export default function AdminAbout() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.AboutContent.delete(id),
+    mutationFn: (id) => contentClient.entities.AboutContent.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-about'] });
     }

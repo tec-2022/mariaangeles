@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Check, X, Trash2, MessageSquare, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,12 +15,12 @@ export default function AdminComments() {
 
   const { data: comments = [], isLoading } = useQuery({
     queryKey: ['admin-comments'],
-    queryFn: () => base44.entities.Comment.list('-created_date')
+    queryFn: () => contentClient.entities.Comment.list('-created_date')
   });
 
   const { data: blogPosts = [] } = useQuery({
     queryKey: ['admin-blog-posts-for-comments'],
-    queryFn: () => base44.entities.BlogPost.list()
+    queryFn: () => contentClient.entities.BlogPost.list()
   });
 
   const getPostTitle = (postId) => {
@@ -29,14 +29,14 @@ export default function AdminComments() {
   };
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Comment.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.Comment.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-comments'] });
     }
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Comment.delete(id),
+    mutationFn: (id) => contentClient.entities.Comment.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-comments'] });
     }

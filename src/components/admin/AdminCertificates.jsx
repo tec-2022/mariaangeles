@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Trash2, FileText, Upload, Loader2, Eye, EyeOff, Award, Calendar, Building2, AlertCircle, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -34,21 +34,21 @@ export default function AdminCertificates() {
 
   const { data: certificates = [], isLoading } = useQuery({
     queryKey: ['admin-certificates'],
-    queryFn: () => base44.entities.Certificate.list('-date')
+    queryFn: () => contentClient.entities.Certificate.list('-date')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Certificate.create(data),
+    mutationFn: (data) => contentClient.entities.Certificate.create(data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-certificates'] })
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Certificate.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.Certificate.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-certificates'] })
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Certificate.delete(id),
+    mutationFn: (id) => contentClient.entities.Certificate.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-certificates'] })
   });
 
@@ -68,10 +68,10 @@ export default function AdminCertificates() {
       setUploadProgress(((i + 0.5) / files.length) * 100);
 
       // Upload file
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await contentClient.integrations.Core.UploadFile({ file });
 
       // Extract data with AI
-      const extractedData = await base44.integrations.Core.ExtractDataFromUploadedFile({
+      const extractedData = await contentClient.integrations.Core.ExtractDataFromUploadedFile({
         file_url,
         json_schema: {
           type: "object",

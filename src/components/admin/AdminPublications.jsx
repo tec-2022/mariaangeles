@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, ExternalLink, Languages, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -39,11 +39,11 @@ export default function AdminPublications() {
 
   const { data: publications = [], isLoading } = useQuery({
     queryKey: ['admin-publications'],
-    queryFn: () => base44.entities.Publication.list('-year')
+    queryFn: () => contentClient.entities.Publication.list('-year')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Publication.create(data),
+    mutationFn: (data) => contentClient.entities.Publication.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-publications'] });
       handleCloseDialog();
@@ -51,7 +51,7 @@ export default function AdminPublications() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Publication.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.Publication.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-publications'] });
       handleCloseDialog();
@@ -59,7 +59,7 @@ export default function AdminPublications() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Publication.delete(id),
+    mutationFn: (id) => contentClient.entities.Publication.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-publications'] });
     }

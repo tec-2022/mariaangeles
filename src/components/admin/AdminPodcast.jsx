@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, Eye, EyeOff, Play, Star, StarOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -39,11 +39,11 @@ export default function AdminPodcast() {
 
   const { data: episodes = [], isLoading } = useQuery({
     queryKey: ['admin-episodes'],
-    queryFn: () => base44.entities.PodcastEpisode.list('-episode_number')
+    queryFn: () => contentClient.entities.PodcastEpisode.list('-episode_number')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.PodcastEpisode.create(data),
+    mutationFn: (data) => contentClient.entities.PodcastEpisode.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-episodes'] });
       handleCloseDialog();
@@ -51,7 +51,7 @@ export default function AdminPodcast() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.PodcastEpisode.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.PodcastEpisode.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-episodes'] });
       handleCloseDialog();
@@ -59,7 +59,7 @@ export default function AdminPodcast() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.PodcastEpisode.delete(id),
+    mutationFn: (id) => contentClient.entities.PodcastEpisode.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-episodes'] });
     }

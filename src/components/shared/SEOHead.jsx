@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 
 export default function SEOHead({ 
@@ -12,7 +12,7 @@ export default function SEOHead({
   // Fetch SEO settings from database
   const { data: seoSettings = [] } = useQuery({
     queryKey: ['seo-settings-head'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'seo' }),
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'seo' }),
     staleTime: 5 * 60 * 1000 // Cache for 5 minutes
   });
 

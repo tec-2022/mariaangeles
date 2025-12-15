@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, Image as ImageIcon, FolderOpen, Upload, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -46,43 +46,43 @@ export default function AdminGallery() {
 
   const { data: albums = [], isLoading: loadingAlbums } = useQuery({
     queryKey: ['admin-albums'],
-    queryFn: () => base44.entities.GalleryAlbum.list('order')
+    queryFn: () => contentClient.entities.GalleryAlbum.list('order')
   });
 
   const { data: images = [], isLoading: loadingImages } = useQuery({
     queryKey: ['admin-gallery'],
-    queryFn: () => base44.entities.GalleryImage.list('order')
+    queryFn: () => contentClient.entities.GalleryImage.list('order')
   });
 
   // Album mutations
   const createAlbumMutation = useMutation({
-    mutationFn: (data) => base44.entities.GalleryAlbum.create(data),
+    mutationFn: (data) => contentClient.entities.GalleryAlbum.create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-albums'] }); setIsAlbumDialogOpen(false); }
   });
 
   const updateAlbumMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.GalleryAlbum.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.GalleryAlbum.update(id, data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-albums'] }); setIsAlbumDialogOpen(false); }
   });
 
   const deleteAlbumMutation = useMutation({
-    mutationFn: (id) => base44.entities.GalleryAlbum.delete(id),
+    mutationFn: (id) => contentClient.entities.GalleryAlbum.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-albums'] })
   });
 
   // Image mutations
   const createImageMutation = useMutation({
-    mutationFn: (data) => base44.entities.GalleryImage.create(data),
+    mutationFn: (data) => contentClient.entities.GalleryImage.create(data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-gallery'] }); setIsImageDialogOpen(false); }
   });
 
   const updateImageMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.GalleryImage.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.GalleryImage.update(id, data),
     onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-gallery'] }); setIsImageDialogOpen(false); }
   });
 
   const deleteImageMutation = useMutation({
-    mutationFn: (id) => base44.entities.GalleryImage.delete(id),
+    mutationFn: (id) => contentClient.entities.GalleryImage.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-gallery'] })
   });
 
@@ -112,7 +112,7 @@ export default function AdminGallery() {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await contentClient.integrations.Core.UploadFile({ file });
     if (type === 'album') {
       setAlbumForm({ ...albumForm, cover_image: file_url });
     } else {

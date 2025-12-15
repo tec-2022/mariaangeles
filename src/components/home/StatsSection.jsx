@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { TrendingUp, BookOpen, GraduationCap, Mic } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -12,18 +12,18 @@ export default function StatsSection() {
   // Fetch settings for manual stats
   const { data: settings = [], isLoading: loadingSettings } = useQuery({
     queryKey: ['home-stats'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'stats' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'stats' })
   });
 
   // Fetch real counts from database
   const { data: publications = [] } = useQuery({
     queryKey: ['publications-count'],
-    queryFn: () => base44.entities.Publication.list()
+    queryFn: () => contentClient.entities.Publication.list()
   });
 
   const { data: episodes = [] } = useQuery({
     queryKey: ['episodes-count'],
-    queryFn: () => base44.entities.PodcastEpisode.filter({ published: true })
+    queryFn: () => contentClient.entities.PodcastEpisode.filter({ published: true })
   });
 
   const getSetting = (key) => {

@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { GraduationCap, BookOpen, Award, TrendingUp, Building, Download, Globe, Briefcase } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -14,31 +14,31 @@ export default function About() {
   // Fetch profile settings from database
   const { data: settings = [] } = useQuery({
     queryKey: ['profile-settings'],
-    queryFn: () => base44.entities.SiteSettings.list()
+    queryFn: () => contentClient.entities.SiteSettings.list()
   });
 
   // Fetch about content from database
   const { data: aboutContent = [], isLoading } = useQuery({
     queryKey: ['about-content'],
-    queryFn: () => base44.entities.AboutContent.list('order')
+    queryFn: () => contentClient.entities.AboutContent.list('order')
   });
 
   // Fetch real publication count from database
   const { data: publications = [] } = useQuery({
     queryKey: ['about-publications-count'],
-    queryFn: () => base44.entities.Publication.list()
+    queryFn: () => contentClient.entities.Publication.list()
   });
 
   // Fetch institutions count
   const { data: institutions = [] } = useQuery({
     queryKey: ['about-institutions-count'],
-    queryFn: () => base44.entities.Institution.filter({ visible: true })
+    queryFn: () => contentClient.entities.Institution.filter({ visible: true })
   });
 
   // Fetch certificates/recognitions count
   const { data: certificates = [] } = useQuery({
     queryKey: ['about-certificates-count'],
-    queryFn: () => base44.entities.Certificate.filter({ visible: true })
+    queryFn: () => contentClient.entities.Certificate.filter({ visible: true })
   });
 
   const getSetting = (key, defaultValue = "") => {

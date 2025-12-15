@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { Share2, X } from "lucide-react";
 import { useLanguage } from "./LanguageContext";
@@ -47,7 +47,7 @@ export default function SocialBubble() {
   // Fetch social links from database
   const { data: socialLinks = [] } = useQuery({
     queryKey: ['social-links'],
-    queryFn: () => base44.entities.SocialLink.filter({ active: true }, 'order')
+    queryFn: () => contentClient.entities.SocialLink.filter({ active: true }, 'order')
   });
 
   // Don't render if no social links

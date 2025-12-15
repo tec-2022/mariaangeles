@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { 
   LayoutDashboard, FileText, Calendar, BookOpen, Mic, Image, 
@@ -57,9 +57,9 @@ export default function Admin() {
 
   const checkAuth = async () => {
     try {
-      const isAuth = await base44.auth.isAuthenticated();
+      const isAuth = await contentClient.auth.isAuthenticated();
       if (isAuth) {
-        const currentUser = await base44.auth.me();
+        const currentUser = await contentClient.auth.me();
         // Allow admin and editor roles
         if (currentUser.role === 'admin' || currentUser.role === 'editor') {
           setUser(currentUser);
@@ -71,11 +71,11 @@ export default function Admin() {
         }
       } else {
         // Not logged in - redirect to login
-        base44.auth.redirectToLogin(window.location.href);
+        contentClient.auth.redirectToLogin(window.location.href);
         setAuthState('unauthenticated');
       }
     } catch (error) {
-      base44.auth.redirectToLogin(window.location.href);
+      contentClient.auth.redirectToLogin(window.location.href);
       setAuthState('unauthenticated');
     }
   };
@@ -85,8 +85,8 @@ export default function Admin() {
     queryKey: ['admin-badge-counts'],
     queryFn: async () => {
       const [comments, messages] = await Promise.all([
-        base44.entities.Comment.list(),
-        base44.entities.ContactMessage.list()
+        contentClient.entities.Comment.list(),
+        contentClient.entities.ContactMessage.list()
       ]);
       return {
         unreadMessages: messages.filter(m => !m.read && !m.archived).length,
@@ -258,7 +258,7 @@ export default function Admin() {
             <Tooltip delayDuration={0}>
               <TooltipTrigger asChild>
                 <button
-                  onClick={() => base44.auth.logout('/Admin')}
+                  onClick={() => contentClient.auth.logout('/Admin')}
                   className="w-full flex items-center gap-2 px-2 py-1.5 rounded-md text-slate-300 hover:bg-white/10 transition-all"
                 >
                   <LogOut className="w-4 h-4 flex-shrink-0" />

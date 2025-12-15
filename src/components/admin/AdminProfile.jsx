@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Upload, Save, User, FileText, Camera, Loader2, Mail, Phone, MapPin, Bell, BookOpen, GraduationCap, Award, FileCheck, Building, Plus, Trash2, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -30,36 +30,36 @@ export default function AdminProfile() {
 
   const { data: settings = [] } = useQuery({
     queryKey: ['profile-settings'],
-    queryFn: () => base44.entities.SiteSettings.list()
+    queryFn: () => contentClient.entities.SiteSettings.list()
   });
 
   // Fetch stats from database
   const { data: publications = [] } = useQuery({
     queryKey: ['stats-publications'],
-    queryFn: () => base44.entities.Publication.list()
+    queryFn: () => contentClient.entities.Publication.list()
   });
 
   const { data: theses = [] } = useQuery({
     queryKey: ['stats-theses'],
     queryFn: async () => {
-      const pubs = await base44.entities.Publication.filter({ type: 'Tesis Dirigida' });
+      const pubs = await contentClient.entities.Publication.filter({ type: 'Tesis Dirigida' });
       return pubs;
     }
   });
 
   const { data: awards = [] } = useQuery({
     queryKey: ['stats-awards'],
-    queryFn: () => base44.entities.AboutContent.filter({ section: 'honor' })
+    queryFn: () => contentClient.entities.AboutContent.filter({ section: 'honor' })
   });
 
   const { data: certificates = [] } = useQuery({
     queryKey: ['stats-certificates'],
-    queryFn: () => base44.entities.Certificate.list()
+    queryFn: () => contentClient.entities.Certificate.list()
   });
 
   const { data: institutions = [], isLoading: loadingInstitutions } = useQuery({
     queryKey: ['admin-institutions'],
-    queryFn: () => base44.entities.Institution.list('order')
+    queryFn: () => contentClient.entities.Institution.list('order')
   });
 
   const [institutionForm, setInstitutionForm] = useState({
@@ -70,9 +70,9 @@ export default function AdminProfile() {
   const institutionMutation = useMutation({
     mutationFn: async (data) => {
       if (data.id) {
-        return base44.entities.Institution.update(data.id, data);
+        return contentClient.entities.Institution.update(data.id, data);
       }
-      return base44.entities.Institution.create(data);
+      return contentClient.entities.Institution.create(data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-institutions'] });
@@ -82,12 +82,12 @@ export default function AdminProfile() {
   });
 
   const deleteInstitutionMutation = useMutation({
-    mutationFn: (id) => base44.entities.Institution.delete(id),
+    mutationFn: (id) => contentClient.entities.Institution.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-institutions'] })
   });
 
   const toggleVisibility = async (inst) => {
-    await base44.entities.Institution.update(inst.id, { visible: !inst.visible });
+    await contentClient.entities.Institution.update(inst.id, { visible: !inst.visible });
     queryClient.invalidateQueries({ queryKey: ['admin-institutions'] });
   };
 
@@ -112,9 +112,9 @@ export default function AdminProfile() {
     mutationFn: async ({ key, value, category }) => {
       const existing = settings.find(s => s.key === key);
       if (existing) {
-        return base44.entities.SiteSettings.update(existing.id, { value });
+        return contentClient.entities.SiteSettings.update(existing.id, { value });
       } else {
-        return base44.entities.SiteSettings.create({ key, value, category: category || "profile" });
+        return contentClient.entities.SiteSettings.create({ key, value, category: category || "profile" });
       }
     },
     onSuccess: () => {
@@ -128,7 +128,7 @@ export default function AdminProfile() {
 
     setUploading({ ...uploading, [type]: true });
     
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await contentClient.integrations.Core.UploadFile({ file });
     
     const key = type === 'photo' ? 'profile_photo' : 'cv_url';
     setFormData({ ...formData, [key]: file_url });

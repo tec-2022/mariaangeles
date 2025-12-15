@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { X, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -98,7 +98,7 @@ export default function SeasonalPopup() {
 
   const { data: settings = [] } = useQuery({
     queryKey: ['seasonal-theme-popup'],
-    queryFn: () => base44.entities.SiteSettings.filter({ key: 'seasonal_theme' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ key: 'seasonal_theme' })
   });
 
   const currentTheme = settings.find(s => s.key === 'seasonal_theme')?.value || 'none';
@@ -131,7 +131,7 @@ export default function SeasonalPopup() {
         try {
           const prompt = AI_PROMPTS[currentTheme]?.[language] || AI_PROMPTS[currentTheme]?.es;
           if (prompt) {
-            const response = await base44.integrations.Core.InvokeLLM({
+            const response = await contentClient.integrations.Core.InvokeLLM({
               prompt: prompt
             });
             setAiMessage(response);

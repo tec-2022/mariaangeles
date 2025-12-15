@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { BookOpen, Users, FileText, ExternalLink, Loader2, Quote, Award, Handshake, TrendingUp } from "lucide-react";
 import Breadcrumbs from "../components/shared/Breadcrumbs";
@@ -23,13 +23,13 @@ export default function Publications() {
   // Fetch publications from database
   const { data: publications = [], isLoading } = useQuery({
     queryKey: ['publications-page'],
-    queryFn: () => base44.entities.Publication.list('-year')
+    queryFn: () => contentClient.entities.Publication.list('-year')
   });
 
   // Fetch stats from settings
   const { data: settings = [] } = useQuery({
     queryKey: ['publications-stats'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'stats' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'stats' })
   });
 
   const getSetting = (key, defaultValue) => {

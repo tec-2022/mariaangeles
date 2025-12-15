@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { GraduationCap, Users, BookOpen, Brain, Heart, Code, Database, Cpu, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -14,13 +14,13 @@ export default function Teaching() {
   // Fetch courses from database
   const { data: courses = [], isLoading } = useQuery({
     queryKey: ['teaching-courses'],
-    queryFn: () => base44.entities.Course.list()
+    queryFn: () => contentClient.entities.Course.list()
   });
 
   // Fetch settings for thesis stats
   const { data: settings = [] } = useQuery({
     queryKey: ['teaching-settings'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'stats' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'stats' })
   });
 
   const getSetting = (key, defaultValue) => {

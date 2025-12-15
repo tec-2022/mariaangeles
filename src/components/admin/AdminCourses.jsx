@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, GraduationCap, Users } from "lucide-react";
 import { autoTranslate } from "./AutoTranslate";
@@ -32,11 +32,11 @@ export default function AdminCourses() {
 
   const { data: courses = [], isLoading } = useQuery({
     queryKey: ['admin-courses'],
-    queryFn: () => base44.entities.Course.list('-created_date')
+    queryFn: () => contentClient.entities.Course.list('-created_date')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Course.create(data),
+    mutationFn: (data) => contentClient.entities.Course.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-courses'] });
       handleCloseDialog();
@@ -44,7 +44,7 @@ export default function AdminCourses() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Course.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.Course.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-courses'] });
       handleCloseDialog();
@@ -52,7 +52,7 @@ export default function AdminCourses() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Course.delete(id),
+    mutationFn: (id) => contentClient.entities.Course.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-courses'] });
     }

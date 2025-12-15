@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, Star, Upload, Mail, Linkedin, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,11 +38,11 @@ export default function AdminResearchers() {
 
   const { data: researchers = [], isLoading } = useQuery({
     queryKey: ['admin-researchers'],
-    queryFn: () => base44.entities.Researcher.list('order')
+    queryFn: () => contentClient.entities.Researcher.list('order')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Researcher.create(data),
+    mutationFn: (data) => contentClient.entities.Researcher.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-researchers'] });
       handleCloseDialog();
@@ -50,7 +50,7 @@ export default function AdminResearchers() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Researcher.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.Researcher.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-researchers'] });
       handleCloseDialog();
@@ -58,7 +58,7 @@ export default function AdminResearchers() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Researcher.delete(id),
+    mutationFn: (id) => contentClient.entities.Researcher.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-researchers'] });
     }
@@ -118,7 +118,7 @@ export default function AdminResearchers() {
 
     setUploading(true);
     try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const { file_url } = await contentClient.integrations.Core.UploadFile({ file });
       setFormData({ ...formData, photo: file_url });
     } catch (error) {
       console.error('Error uploading photo:', error);

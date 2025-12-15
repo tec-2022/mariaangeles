@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -44,32 +44,32 @@ export default function AdminNewsletter() {
 
   const { data: subscribers = [], isLoading } = useQuery({
     queryKey: ['newsletter-subscribers'],
-    queryFn: () => base44.entities.Subscriber.filter({ active: true })
+    queryFn: () => contentClient.entities.Subscriber.filter({ active: true })
   });
 
   const { data: users = [] } = useQuery({
     queryKey: ['newsletter-users'],
-    queryFn: () => base44.entities.User.list()
+    queryFn: () => contentClient.entities.User.list()
   });
 
   const { data: blogPosts = [] } = useQuery({
     queryKey: ['newsletter-blogs'],
-    queryFn: () => base44.entities.BlogPost.filter({ published: true }, '-created_date', 20)
+    queryFn: () => contentClient.entities.BlogPost.filter({ published: true }, '-created_date', 20)
   });
 
   const { data: publications = [] } = useQuery({
     queryKey: ['newsletter-pubs'],
-    queryFn: () => base44.entities.Publication.list('-year', 20)
+    queryFn: () => contentClient.entities.Publication.list('-year', 20)
   });
 
   const { data: episodes = [] } = useQuery({
     queryKey: ['newsletter-episodes'],
-    queryFn: () => base44.entities.PodcastEpisode.filter({ published: true }, '-date', 20)
+    queryFn: () => contentClient.entities.PodcastEpisode.filter({ published: true }, '-date', 20)
   });
 
   const { data: events = [] } = useQuery({
     queryKey: ['newsletter-events'],
-    queryFn: () => base44.entities.Event.filter({ is_upcoming: true }, '-date', 20)
+    queryFn: () => contentClient.entities.Event.filter({ is_upcoming: true }, '-date', 20)
   });
 
   const getContentList = () => {
@@ -239,7 +239,7 @@ export default function AdminNewsletter() {
 
     for (const subscriber of eligibleSubscribers) {
       try {
-        await base44.integrations.Core.SendEmail({
+        await contentClient.integrations.Core.SendEmail({
           to: subscriber.email,
           subject: subject,
           body: content

@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 import { LanguageProvider, useLanguage } from "@/components/shared/LanguageContext";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import SocialBubble from "@/components/shared/SocialBubble";
 import CookieConsent from "@/components/shared/CookieConsent";
@@ -29,13 +29,13 @@ function LayoutContent({ children, currentPageName }) {
       // Fetch page visibility settings
       const { data: pageSettings = [] } = useQuery({
         queryKey: ['page-visibility'],
-        queryFn: () => base44.entities.SiteSettings.filter({ category: 'pages' })
+        queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'pages' })
       });
 
       // Fetch seasonal theme
       const { data: themeSettings = [] } = useQuery({
         queryKey: ['seasonal-theme-layout'],
-        queryFn: () => base44.entities.SiteSettings.filter({ key: 'seasonal_theme' })
+        queryFn: () => contentClient.entities.SiteSettings.filter({ key: 'seasonal_theme' })
       });
       const seasonalTheme = themeSettings.find(s => s.key === 'seasonal_theme')?.value || 'none';
 

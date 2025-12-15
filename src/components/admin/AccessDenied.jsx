@@ -3,7 +3,7 @@ import { ShieldX, Home, LogOut, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { createPageUrl } from "../../utils";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 
 export default function AccessDenied({ language = 'es' }) {
   const navigate = useNavigate();
@@ -98,7 +98,7 @@ export default function AccessDenied({ language = 'es' }) {
             <Button 
               variant="outline" 
               className="w-full sm:w-auto border-slate-600 text-slate-300 hover:bg-slate-800"
-              onClick={() => base44.auth.logout('/')}
+              onClick={() => contentClient.auth.logout('/')}
             >
               <LogOut className="w-4 h-4 mr-2" />
               {t.logout}

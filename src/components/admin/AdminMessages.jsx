@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Mail, MailOpen, Trash2, Archive, Reply, CheckCircle, Clock, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,16 +16,16 @@ export default function AdminMessages() {
 
   const { data: messages = [], isLoading } = useQuery({
     queryKey: ['admin-messages'],
-    queryFn: () => base44.entities.ContactMessage.list('-created_date')
+    queryFn: () => contentClient.entities.ContactMessage.list('-created_date')
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.ContactMessage.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.ContactMessage.update(id, data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-messages'] })
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.ContactMessage.delete(id),
+    mutationFn: (id) => contentClient.entities.ContactMessage.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-messages'] });
       setSelectedMessage(null);
