@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, GripVertical, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,11 +38,11 @@ export default function AdminSocialLinks() {
 
   const { data: links = [], isLoading } = useQuery({
     queryKey: ['admin-social-links'],
-    queryFn: () => base44.entities.SocialLink.list('order')
+    queryFn: () => contentClient.entities.SocialLink.list('order')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.SocialLink.create(data),
+    mutationFn: (data) => contentClient.entities.SocialLink.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-social-links'] });
       handleCloseDialog();
@@ -50,7 +50,7 @@ export default function AdminSocialLinks() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.SocialLink.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.SocialLink.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-social-links'] });
       handleCloseDialog();
@@ -58,7 +58,7 @@ export default function AdminSocialLinks() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.SocialLink.delete(id),
+    mutationFn: (id) => contentClient.entities.SocialLink.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-social-links'] });
     }

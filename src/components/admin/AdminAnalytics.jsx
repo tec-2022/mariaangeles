@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { Eye, Heart, MessageSquare, Share2, Search, Clock, TrendingUp, Users } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -8,17 +8,17 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 export default function AdminAnalytics() {
   const { data: blogPosts = [] } = useQuery({
     queryKey: ['admin-blog-posts'],
-    queryFn: () => base44.entities.BlogPost.list()
+    queryFn: () => contentClient.entities.BlogPost.list()
   });
 
   const { data: analyticsEvents = [] } = useQuery({
     queryKey: ['admin-analytics-events'],
-    queryFn: () => base44.entities.AnalyticsEvent.list('-created_date', 500)
+    queryFn: () => contentClient.entities.AnalyticsEvent.list('-created_date', 500)
   });
 
   const { data: comments = [] } = useQuery({
     queryKey: ['admin-comments'],
-    queryFn: () => base44.entities.Comment.list()
+    queryFn: () => contentClient.entities.Comment.list()
   });
 
   // Calculate stats

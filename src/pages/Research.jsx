@@ -1,5 +1,5 @@
 import React from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { Globe, TrendingUp, Lightbulb, Target, BookOpen, Award, Users, Building } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -15,19 +15,19 @@ export default function Research() {
   // Fetch research projects from database
   const { data: projects = [] } = useQuery({
     queryKey: ['research-projects'],
-    queryFn: () => base44.entities.ResearchProject.list('order')
+    queryFn: () => contentClient.entities.ResearchProject.list('order')
   });
 
   // Fetch stats from settings
   const { data: settings = [] } = useQuery({
     queryKey: ['research-settings'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'stats' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'stats' })
   });
 
   // Fetch research lines from database
   const { data: researchLinesData = [] } = useQuery({
     queryKey: ['research-lines'],
-    queryFn: () => base44.entities.ResearchLine.filter({ visible: true }, 'order')
+    queryFn: () => contentClient.entities.ResearchLine.filter({ visible: true }, 'order')
   });
 
   const getSetting = (key, defaultValue) => {

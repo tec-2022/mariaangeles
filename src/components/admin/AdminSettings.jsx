@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Eye, EyeOff, Palette, Upload, Loader2, Save, Sparkles, TreePine, Heart, Sun, Ghost, Cake, Star } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
@@ -23,7 +23,7 @@ export default function AdminSettings() {
 
   const { data: settings = [], isLoading } = useQuery({
     queryKey: ['admin-settings'],
-    queryFn: () => base44.entities.SiteSettings.list()
+    queryFn: () => contentClient.entities.SiteSettings.list()
   });
 
   useEffect(() => {
@@ -40,14 +40,14 @@ export default function AdminSettings() {
   }, [settings]);
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.SiteSettings.create(data),
+    mutationFn: (data) => contentClient.entities.SiteSettings.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-settings'] });
     }
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.SiteSettings.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.SiteSettings.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-settings'] });
     }
@@ -66,7 +66,7 @@ export default function AdminSettings() {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await contentClient.integrations.Core.UploadFile({ file });
     setBranding({ ...branding, favicon_url: file_url });
     await saveBrandingSetting('favicon_url', file_url);
     setUploading(false);

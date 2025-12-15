@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 
 // Snowflake component for Christmas
@@ -41,7 +41,7 @@ export default function SeasonalEffects() {
 
   const { data: settings = [] } = useQuery({
     queryKey: ['seasonal-theme'],
-    queryFn: () => base44.entities.SiteSettings.filter({ key: 'seasonal_theme' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ key: 'seasonal_theme' })
   });
 
   const currentTheme = settings.find(s => s.key === 'seasonal_theme')?.value || 'none';

@@ -1,8 +1,6 @@
-# Base44 App
+# Sitio de María Ángeles Quezada
 
-
-This app was created automatically by Base44.
-It's a Vite+React app that communicates with the Base44 API.
+Aplicación Vite + React para presentar el trabajo académico de María Ángeles Quezada. El proyecto usa datos locales simulados para que la experiencia funcione sin depender de servicios externos.
 
 ## Running the app
 
@@ -17,4 +15,12 @@ npm run dev
 npm run build
 ```
 
-For more information and support, please contact Base44 support at app@base44.com.
+## Base de datos (Supabase)
+
+Se incluye un script SQL para crear todas las tablas usadas por el sitio y precargar los datos de ejemplo que hoy viven en el cliente local. Puedes ejecutarlo en el editor SQL de Supabase o con `psql`:
+
+```bash
+psql "$SUPABASE_DB_URL" -f supabase/schema.sql
+```
+
+El esquema cubre entradas para blog, eventos, publicaciones, podcast, noticias, galería, contactos, suscriptores, analítica básica y configuración del sitio.

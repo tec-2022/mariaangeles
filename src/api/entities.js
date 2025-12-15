@@ -1,47 +1,47 @@
-import { base44 } from './base44Client';
+import { contentClient } from './contentClient';
 
 
-export const BlogPost = base44.entities.BlogPost;
+export const BlogPost = contentClient.entities.BlogPost;
 
-export const Event = base44.entities.Event;
+export const Event = contentClient.entities.Event;
 
-export const Publication = base44.entities.Publication;
+export const Publication = contentClient.entities.Publication;
 
-export const PodcastEpisode = base44.entities.PodcastEpisode;
+export const PodcastEpisode = contentClient.entities.PodcastEpisode;
 
-export const GalleryImage = base44.entities.GalleryImage;
+export const GalleryImage = contentClient.entities.GalleryImage;
 
-export const SiteSettings = base44.entities.SiteSettings;
+export const SiteSettings = contentClient.entities.SiteSettings;
 
-export const Comment = base44.entities.Comment;
+export const Comment = contentClient.entities.Comment;
 
-export const AnalyticsEvent = base44.entities.AnalyticsEvent;
+export const AnalyticsEvent = contentClient.entities.AnalyticsEvent;
 
-export const ResearchProject = base44.entities.ResearchProject;
+export const ResearchProject = contentClient.entities.ResearchProject;
 
-export const Course = base44.entities.Course;
+export const Course = contentClient.entities.Course;
 
-export const NewsItem = base44.entities.NewsItem;
+export const NewsItem = contentClient.entities.NewsItem;
 
-export const AboutContent = base44.entities.AboutContent;
+export const AboutContent = contentClient.entities.AboutContent;
 
-export const SocialLink = base44.entities.SocialLink;
+export const SocialLink = contentClient.entities.SocialLink;
 
-export const GalleryAlbum = base44.entities.GalleryAlbum;
+export const GalleryAlbum = contentClient.entities.GalleryAlbum;
 
-export const Certificate = base44.entities.Certificate;
+export const Certificate = contentClient.entities.Certificate;
 
-export const ContactMessage = base44.entities.ContactMessage;
+export const ContactMessage = contentClient.entities.ContactMessage;
 
-export const Researcher = base44.entities.Researcher;
+export const Researcher = contentClient.entities.Researcher;
 
-export const Subscriber = base44.entities.Subscriber;
+export const Subscriber = contentClient.entities.Subscriber;
 
-export const Institution = base44.entities.Institution;
+export const Institution = contentClient.entities.Institution;
 
-export const ResearchLine = base44.entities.ResearchLine;
+export const ResearchLine = contentClient.entities.ResearchLine;
 
 
 
 // auth sdk:
-export const User = base44.auth;
+export const User = contentClient.auth;

@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { createPageUrl } from "../utils";
 import SEOHead from "../components/shared/SEOHead";
@@ -22,7 +22,7 @@ const SectionLoader = () => (
 export default function Home() {
   const { data: pageSettings = [], isLoading } = useQuery({
     queryKey: ['home-page-visibility'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'pages' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'pages' })
   });
 
   const isHomeHidden = pageSettings.find(s => s.key === 'show_home')?.value === 'false';

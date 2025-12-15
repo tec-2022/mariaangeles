@@ -1,10 +1,10 @@
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 
 export async function autoTranslate(text, fromLang = 'es', toLang = 'en') {
   if (!text || text.trim() === '') return '';
   
   try {
-    const result = await base44.integrations.Core.InvokeLLM({
+    const result = await contentClient.integrations.Core.InvokeLLM({
       prompt: `Translate the following text from ${fromLang === 'es' ? 'Spanish' : 'English'} to ${toLang === 'es' ? 'Spanish' : 'English'}. 
 Only return the translated text, nothing else. Keep the same tone and style. If it's HTML, preserve the HTML tags.
 

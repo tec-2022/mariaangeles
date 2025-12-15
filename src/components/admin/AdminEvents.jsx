@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, Calendar, MapPin, Star, StarOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -37,11 +37,11 @@ export default function AdminEvents() {
 
   const { data: events = [], isLoading } = useQuery({
     queryKey: ['admin-events'],
-    queryFn: () => base44.entities.Event.list('-date')
+    queryFn: () => contentClient.entities.Event.list('-date')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Event.create(data),
+    mutationFn: (data) => contentClient.entities.Event.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-events'] });
       handleCloseDialog();
@@ -49,7 +49,7 @@ export default function AdminEvents() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.Event.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.Event.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-events'] });
       handleCloseDialog();
@@ -57,7 +57,7 @@ export default function AdminEvents() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.Event.delete(id),
+    mutationFn: (id) => contentClient.entities.Event.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-events'] });
     }
@@ -298,7 +298,7 @@ export default function AdminEvents() {
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (file) {
-                        const { file_url } = await base44.integrations.Core.UploadFile({ file });
+                        const { file_url } = await contentClient.integrations.Core.UploadFile({ file });
                         setFormData({ ...formData, image: file_url });
                       }
                     }} 

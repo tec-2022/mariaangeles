@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { MessageCircle, Send, User, Loader2, CheckCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -18,13 +18,13 @@ export default function CommentSection({ postId }) {
   // Fetch approved comments for this post from database
   const { data: comments = [], isLoading } = useQuery({
     queryKey: ['post-comments', postId],
-    queryFn: () => base44.entities.Comment.filter({ post_id: postId, approved: true }, '-created_date'),
+    queryFn: () => contentClient.entities.Comment.filter({ post_id: postId, approved: true }, '-created_date'),
     enabled: !!postId
   });
 
   // Create comment mutation
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.Comment.create(data),
+    mutationFn: (data) => contentClient.entities.Comment.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['post-comments', postId] });
       setForm({ name: "", email: "", comment: "" });
@@ -49,10 +49,10 @@ export default function CommentSection({ postId }) {
 
     // Send notification email
     try {
-      const settings = await base44.entities.SiteSettings.filter({ key: 'contact_notification_email' });
+      const settings = await contentClient.entities.SiteSettings.filter({ key: 'contact_notification_email' });
       const notificationEmail = settings[0]?.value;
       if (notificationEmail && notificationEmail.trim()) {
-        await base44.integrations.Core.SendEmail({
+        await contentClient.integrations.Core.SendEmail({
           to: notificationEmail,
           subject: `Nuevo comentario en el blog`,
           body: `

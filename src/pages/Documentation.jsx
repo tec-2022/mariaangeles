@@ -27,7 +27,7 @@ export default function Documentation() {
     md += `Incluye gestión de publicaciones, eventos, blog, podcast, galería y más.\n\n`;
     md += `### Tecnologías Utilizadas\n`;
     md += `- **Frontend:** React, Tailwind CSS, shadcn/ui\n`;
-    md += `- **Backend:** Base44 Platform (BaaS)\n`;
+    md += `- **Backend:** API local de contenido (contentClient)\n`;
     md += `- **Base de Datos:** Entidades gestionadas automáticamente\n`;
     md += `- **Integraciones:** IA para traducciones, generación de contenido y análisis\n`;
     md += `- **Temas:** Usabilidad, Autismo, IA en Salud, Pensamiento Computacional\n\n`;
@@ -137,7 +137,7 @@ export default function Documentation() {
     <h3>Tecnologías Utilizadas</h3>
     <ul>
       <li><strong>Frontend:</strong> React, Tailwind CSS, shadcn/ui</li>
-      <li><strong>Backend:</strong> Base44 Platform (BaaS)</li>
+      <li><strong>Backend:</strong> API local de contenido (contentClient)</li>
       <li><strong>Base de Datos:</strong> Entidades gestionadas automáticamente</li>
       <li><strong>Integraciones:</strong> IA para traducciones, generación de contenido y análisis</li>
       <li><strong>Temas:</strong> Usabilidad, Autismo, IA en Salud, Pensamiento Computacional</li>
@@ -541,7 +541,7 @@ export default function Documentation() {
                     <h3>Tecnologías Utilizadas</h3>
                     <ul>
                       <li><strong>Frontend:</strong> React, Tailwind CSS, shadcn/ui</li>
-                      <li><strong>Backend:</strong> Base44 Platform (BaaS)</li>
+                      <li><strong>Backend:</strong> API local de contenido (contentClient)</li>
                       <li><strong>Base de Datos:</strong> Entidades gestionadas automáticamente</li>
                       <li><strong>Integraciones:</strong> IA para traducciones, generación de contenido y análisis</li>
                       <li><strong>Temas:</strong> Usabilidad, Autismo, IA en Salud, Pensamiento Computacional</li>

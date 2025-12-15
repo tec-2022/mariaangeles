@@ -1,26 +1,17 @@
-import { base44 } from './base44Client';
+import { contentClient } from './contentClient';
 
+export const Core = contentClient.integrations.Core;
 
+export const InvokeLLM = contentClient.integrations.Core.InvokeLLM;
 
+export const SendEmail = contentClient.integrations.Core.SendEmail;
 
-export const Core = base44.integrations.Core;
+export const UploadFile = contentClient.integrations.Core.UploadFile;
 
-export const InvokeLLM = base44.integrations.Core.InvokeLLM;
+export const GenerateImage = contentClient.integrations.Core.GenerateImage;
 
-export const SendEmail = base44.integrations.Core.SendEmail;
+export const ExtractDataFromUploadedFile = contentClient.integrations.Core.ExtractDataFromUploadedFile;
 
-export const UploadFile = base44.integrations.Core.UploadFile;
+export const CreateFileSignedUrl = contentClient.integrations.Core.CreateFileSignedUrl;
 
-export const GenerateImage = base44.integrations.Core.GenerateImage;
-
-export const ExtractDataFromUploadedFile = base44.integrations.Core.ExtractDataFromUploadedFile;
-
-export const CreateFileSignedUrl = base44.integrations.Core.CreateFileSignedUrl;
-
-export const UploadPrivateFile = base44.integrations.Core.UploadPrivateFile;
-
-
-
-
-
-
+export const UploadPrivateFile = contentClient.integrations.Core.UploadPrivateFile;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, FlaskConical } from "lucide-react";
 import { autoTranslate } from "./AutoTranslate";
@@ -31,11 +31,11 @@ export default function AdminResearch() {
 
   const { data: projects = [], isLoading } = useQuery({
     queryKey: ['admin-research'],
-    queryFn: () => base44.entities.ResearchProject.list('-created_date')
+    queryFn: () => contentClient.entities.ResearchProject.list('-created_date')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.ResearchProject.create(data),
+    mutationFn: (data) => contentClient.entities.ResearchProject.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-research'] });
       handleCloseDialog();
@@ -43,7 +43,7 @@ export default function AdminResearch() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.ResearchProject.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.ResearchProject.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-research'] });
       handleCloseDialog();
@@ -51,7 +51,7 @@ export default function AdminResearch() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.ResearchProject.delete(id),
+    mutationFn: (id) => contentClient.entities.ResearchProject.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-research'] });
     }

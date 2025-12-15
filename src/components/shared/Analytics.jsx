@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 
 // Check if analytics is enabled via cookies
 const isAnalyticsEnabled = () => {
@@ -24,7 +24,7 @@ export const trackEvent = async (eventName, eventData = {}) => {
 
   // Track to database for dashboard metrics
   try {
-    await base44.entities.AnalyticsEvent.create({
+    await contentClient.entities.AnalyticsEvent.create({
       event_type: eventName,
       page: window.location.pathname,
       content_id: eventData.content_id || eventData.post_id || '',

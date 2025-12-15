@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { Mail, Phone, MapPin, Send, Building, Linkedin, BookOpen, GraduationCap, Loader2, CheckCircle } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -24,12 +24,12 @@ export default function Contact() {
 
   const { data: settings = [] } = useQuery({
     queryKey: ['contact-settings'],
-    queryFn: () => base44.entities.SiteSettings.list()
+    queryFn: () => contentClient.entities.SiteSettings.list()
   });
 
   const { data: institutions = [] } = useQuery({
     queryKey: ['contact-institutions'],
-    queryFn: () => base44.entities.Institution.filter({ visible: true }, 'order')
+    queryFn: () => contentClient.entities.Institution.filter({ visible: true }, 'order')
   });
 
   const getSetting = (key) => settings.find(s => s.key === key)?.value;
@@ -63,7 +63,7 @@ export default function Contact() {
     setSending(true);
 
     // Save to database
-    await base44.entities.ContactMessage.create({
+    await contentClient.entities.ContactMessage.create({
       name: formData.name,
       email: formData.email,
       subject: formData.subject,
@@ -72,7 +72,7 @@ export default function Contact() {
 
     // Fetch settings fresh to get notification emails
     try {
-      const allSettings = await base44.entities.SiteSettings.list();
+      const allSettings = await contentClient.entities.SiteSettings.list();
       const notificationEmail = allSettings.find(s => s.key === 'contact_notification_email')?.value;
       const ccEmail = allSettings.find(s => s.key === 'contact_cc_email')?.value;
       
@@ -87,7 +87,7 @@ export default function Contact() {
       
       // Send to main notification email
       if (notificationEmail && notificationEmail.trim()) {
-        await base44.integrations.Core.SendEmail({
+        await contentClient.integrations.Core.SendEmail({
           to: notificationEmail,
           subject: `Nuevo mensaje de contacto: ${formData.subject}`,
           body: emailBody
@@ -96,7 +96,7 @@ export default function Contact() {
       
       // Send CC copy to secondary email
       if (ccEmail && ccEmail.trim()) {
-        await base44.integrations.Core.SendEmail({
+        await contentClient.integrations.Core.SendEmail({
           to: ccEmail,
           subject: `[CC] Nuevo mensaje de contacto: ${formData.subject}`,
           body: emailBody

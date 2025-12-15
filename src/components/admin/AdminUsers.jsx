@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Users, UserPlus, Shield, Edit2, Trash2, Mail, Loader2, CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -40,16 +40,16 @@ export default function AdminUsers() {
 
   const { data: users = [], isLoading } = useQuery({
     queryKey: ['admin-users'],
-    queryFn: () => base44.entities.User.list()
+    queryFn: () => contentClient.entities.User.list()
   });
 
   const { data: currentUser } = useQuery({
     queryKey: ['current-user'],
-    queryFn: () => base44.auth.me()
+    queryFn: () => contentClient.auth.me()
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.User.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.User.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-users'] });
       setDialogOpen(false);
@@ -62,7 +62,7 @@ export default function AdminUsers() {
     setInviting(true);
     
     // Send invitation email
-    await base44.integrations.Core.SendEmail({
+    await contentClient.integrations.Core.SendEmail({
       to: inviteEmail,
       subject: "Invitación al Panel de Administración - Dra. María de los Ángeles Quezada",
       body: `

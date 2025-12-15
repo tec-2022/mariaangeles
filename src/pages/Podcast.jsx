@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { Mic, Headphones, Clock, Play, Pause, ExternalLink, Volume2, SkipBack, SkipForward } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -26,13 +26,13 @@ export default function Podcast() {
   // Fetch episodes from database
   const { data: episodes = [], isLoading } = useQuery({
     queryKey: ['podcast-episodes'],
-    queryFn: () => base44.entities.PodcastEpisode.filter({ published: true }, '-episode_number')
+    queryFn: () => contentClient.entities.PodcastEpisode.filter({ published: true }, '-episode_number')
   });
 
   // Fetch settings for stats
   const { data: settings = [] } = useQuery({
     queryKey: ['podcast-settings'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'stats' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'stats' })
   });
 
   const getSetting = (key, defaultValue) => {

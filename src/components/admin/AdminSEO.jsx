@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -23,7 +23,7 @@ export default function AdminSEO() {
 
   const { data: seoSettings = [], isLoading } = useQuery({
     queryKey: ['seo-settings'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'seo' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'seo' })
   });
 
   const saveMutation = useMutation({
@@ -31,9 +31,9 @@ export default function AdminSEO() {
       for (const setting of settings) {
         const existing = seoSettings.find(s => s.key === setting.key);
         if (existing) {
-          await base44.entities.SiteSettings.update(existing.id, setting);
+          await contentClient.entities.SiteSettings.update(existing.id, setting);
         } else {
-          await base44.entities.SiteSettings.create({ ...setting, category: 'seo' });
+          await contentClient.entities.SiteSettings.create({ ...setting, category: 'seo' });
         }
       }
     },
@@ -412,7 +412,7 @@ Sitemap: ${formData.site_url || 'https://tudominio.com'}/sitemap.xml`;
               <CardContent className="space-y-4">
                 <div className="border-l-4 border-[#D4AF37] pl-4">
                   <h4 className="font-semibold text-[#0A2540]">{isEn ? '1. Connect Your Domain' : '1. Conecta tu Dominio'}</h4>
-                  <p className="text-sm text-slate-600">{isEn ? 'Set up a custom domain (e.g., robertzarate.com) instead of the Base44 domain.' : 'Configura un dominio personalizado (ej: robertzarate.com) en lugar del dominio de Base44.'}</p>
+                  <p className="text-sm text-slate-600">{isEn ? 'Set up a custom domain (e.g., robertzarate.com) instead of the default temporary domain.' : 'Configura un dominio personalizado (ej: robertzarate.com) en lugar del dominio temporal por defecto.'}</p>
                 </div>
 
                 <div className="border-l-4 border-[#D4AF37] pl-4">

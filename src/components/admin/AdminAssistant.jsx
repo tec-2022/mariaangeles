@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { Bot, Send, Loader2, Sparkles, Lightbulb, TrendingUp, FileText, Calendar, Mic, Globe, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,17 +19,17 @@ export default function AdminAssistant() {
   const [uploading, setUploading] = useState(false);
 
   // Fetch all data for context
-  const { data: blogPosts = [] } = useQuery({ queryKey: ['assistant-blogs'], queryFn: () => base44.entities.BlogPost.list() });
-  const { data: events = [] } = useQuery({ queryKey: ['assistant-events'], queryFn: () => base44.entities.Event.list() });
-  const { data: publications = [] } = useQuery({ queryKey: ['assistant-pubs'], queryFn: () => base44.entities.Publication.list() });
-  const { data: episodes = [] } = useQuery({ queryKey: ['assistant-episodes'], queryFn: () => base44.entities.PodcastEpisode.list() });
-  const { data: analytics = [] } = useQuery({ queryKey: ['assistant-analytics'], queryFn: () => base44.entities.AnalyticsEvent.list('-created_date', 500) });
-  const { data: comments = [] } = useQuery({ queryKey: ['assistant-comments'], queryFn: () => base44.entities.Comment.list() });
+  const { data: blogPosts = [] } = useQuery({ queryKey: ['assistant-blogs'], queryFn: () => contentClient.entities.BlogPost.list() });
+  const { data: events = [] } = useQuery({ queryKey: ['assistant-events'], queryFn: () => contentClient.entities.Event.list() });
+  const { data: publications = [] } = useQuery({ queryKey: ['assistant-pubs'], queryFn: () => contentClient.entities.Publication.list() });
+  const { data: episodes = [] } = useQuery({ queryKey: ['assistant-episodes'], queryFn: () => contentClient.entities.PodcastEpisode.list() });
+  const { data: analytics = [] } = useQuery({ queryKey: ['assistant-analytics'], queryFn: () => contentClient.entities.AnalyticsEvent.list('-created_date', 500) });
+  const { data: comments = [] } = useQuery({ queryKey: ['assistant-comments'], queryFn: () => contentClient.entities.Comment.list() });
 
   // Fetch CV URL from settings
   const { data: settings = [] } = useQuery({ 
     queryKey: ['assistant-settings'], 
-    queryFn: () => base44.entities.SiteSettings.filter({ key: 'cv_url' }) 
+    queryFn: () => contentClient.entities.SiteSettings.filter({ key: 'cv_url' }) 
   });
   const savedCvUrl = settings[0]?.value;
 
@@ -37,7 +37,7 @@ export default function AdminAssistant() {
     const file = e.target.files[0];
     if (!file) return;
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await contentClient.integrations.Core.UploadFile({ file });
     setCvFileUrl(file_url);
     setUploading(false);
   };
@@ -84,7 +84,7 @@ Responde en español de manera profesional y útil. Si te piden análisis, sé e
     // Determine if we should use CV file
     const fileToUse = cvFileUrl || savedCvUrl;
 
-    const result = await base44.integrations.Core.InvokeLLM({
+    const result = await contentClient.integrations.Core.InvokeLLM({
       prompt: context + "\n\nPREGUNTA DEL ADMINISTRADOR:\n" + prompt,
       add_context_from_internet: useInternet,
       file_urls: fileToUse ? [fileToUse] : undefined,

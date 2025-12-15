@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,14 +21,14 @@ export default function Unsubscribe() {
     setStatus('loading');
     
     try {
-      const subscribers = await base44.entities.Subscriber.filter({ email: email });
+      const subscribers = await contentClient.entities.Subscriber.filter({ email: email });
       
       if (subscribers.length === 0) {
         setStatus('not_found');
         return;
       }
       
-      await base44.entities.Subscriber.update(subscribers[0].id, { active: false });
+      await contentClient.entities.Subscriber.update(subscribers[0].id, { active: false });
       setStatus('success');
     } catch (err) {
       console.error('Unsubscribe error:', err);

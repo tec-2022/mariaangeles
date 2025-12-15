@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { Newspaper, Clock, ArrowRight, BookOpen, Mail, CheckCircle, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -28,13 +28,13 @@ export default function Blog() {
   // Fetch blog posts from database
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['blog-posts'],
-    queryFn: () => base44.entities.BlogPost.filter({ published: true }, '-created_date')
+    queryFn: () => contentClient.entities.BlogPost.filter({ published: true }, '-created_date')
   });
 
   // Fetch stats settings
   const { data: settings = [] } = useQuery({
     queryKey: ['blog-settings'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'stats' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'stats' })
   });
 
   const getSetting = (key, defaultValue) => {
@@ -47,8 +47,8 @@ export default function Blog() {
     setSubscribing(true);
     
     try {
-      // Create subscriber (welcome email not possible - Base44 only allows emails to registered users)
-      await base44.entities.Subscriber.create({
+      // Create subscriber (welcome email not sent in the local content client)
+      await contentClient.entities.Subscriber.create({
         email: subscribeEmail,
         source: 'blog',
         active: true

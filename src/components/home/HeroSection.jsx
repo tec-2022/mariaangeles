@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../../utils";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Bell, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,27 +13,27 @@ export default function HeroSection() {
   // Fetch latest content for announcement
   const { data: latestNews = [] } = useQuery({
     queryKey: ['hero-news'],
-    queryFn: () => base44.entities.NewsItem.filter({ published: true }, '-date', 1)
+    queryFn: () => contentClient.entities.NewsItem.filter({ published: true }, '-date', 1)
   });
 
   const { data: latestPost = [] } = useQuery({
     queryKey: ['hero-post'],
-    queryFn: () => base44.entities.BlogPost.filter({ published: true }, '-created_date', 1)
+    queryFn: () => contentClient.entities.BlogPost.filter({ published: true }, '-created_date', 1)
   });
 
   const { data: latestEpisode = [] } = useQuery({
     queryKey: ['hero-episode'],
-    queryFn: () => base44.entities.PodcastEpisode.filter({ published: true }, '-date', 1)
+    queryFn: () => contentClient.entities.PodcastEpisode.filter({ published: true }, '-date', 1)
   });
 
   const { data: latestPublication = [] } = useQuery({
     queryKey: ['hero-publication'],
-    queryFn: () => base44.entities.Publication.list('-created_date', 1)
+    queryFn: () => contentClient.entities.Publication.list('-created_date', 1)
   });
 
   const { data: latestEvent = [] } = useQuery({
     queryKey: ['hero-event'],
-    queryFn: () => base44.entities.Event.filter({ is_upcoming: true }, '-created_date', 1)
+    queryFn: () => contentClient.entities.Event.filter({ is_upcoming: true }, '-created_date', 1)
   });
 
   // Get the most recent item for announcement

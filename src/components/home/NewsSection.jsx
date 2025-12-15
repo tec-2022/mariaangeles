@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../../utils";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery } from "@tanstack/react-query";
 import { BookOpen, Mic, Award, Calendar, Clock, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -12,7 +12,7 @@ export default function NewsSection() {
   
   const { data: news = [] } = useQuery({
     queryKey: ['home-news'],
-    queryFn: () => base44.entities.NewsItem.filter({ published: true }, '-date', 3)
+    queryFn: () => contentClient.entities.NewsItem.filter({ published: true }, '-date', 3)
   });
 
   const getIcon = (type) => {

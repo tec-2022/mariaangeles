@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, Pencil, Trash2, GripVertical, Eye, EyeOff, Globe, TrendingUp, Lightbulb, Target, BookOpen, Award, Users, Building } from "lucide-react";
 import { autoTranslate } from "./AutoTranslate";
@@ -36,11 +36,11 @@ export default function AdminResearchLines() {
 
   const { data: lines = [], isLoading } = useQuery({
     queryKey: ['admin-research-lines'],
-    queryFn: () => base44.entities.ResearchLine.list('order')
+    queryFn: () => contentClient.entities.ResearchLine.list('order')
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.ResearchLine.create(data),
+    mutationFn: (data) => contentClient.entities.ResearchLine.create(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-research-lines'] });
       handleCloseDialog();
@@ -48,7 +48,7 @@ export default function AdminResearchLines() {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, data }) => base44.entities.ResearchLine.update(id, data),
+    mutationFn: ({ id, data }) => contentClient.entities.ResearchLine.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-research-lines'] });
       handleCloseDialog();
@@ -56,7 +56,7 @@ export default function AdminResearchLines() {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.ResearchLine.delete(id),
+    mutationFn: (id) => contentClient.entities.ResearchLine.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-research-lines'] });
     }

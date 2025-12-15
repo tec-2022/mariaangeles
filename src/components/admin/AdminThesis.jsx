@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { base44 } from "@/api/base44Client";
+import { contentClient } from "@/api/contentClient";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { GraduationCap, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,7 @@ export default function AdminThesis() {
 
   const { data: settings = [], isLoading } = useQuery({
     queryKey: ['admin-thesis-settings'],
-    queryFn: () => base44.entities.SiteSettings.filter({ category: 'stats' })
+    queryFn: () => contentClient.entities.SiteSettings.filter({ category: 'stats' })
   });
 
   useEffect(() => {
@@ -59,9 +59,9 @@ export default function AdminThesis() {
         const existing = settings.find(s => s.key === key);
         const valueStr = String(value);
         if (existing) {
-          return base44.entities.SiteSettings.update(existing.id, { value: valueStr });
+          return contentClient.entities.SiteSettings.update(existing.id, { value: valueStr });
         } else {
-          return base44.entities.SiteSettings.create({ key, value: valueStr, category: 'stats' });
+          return contentClient.entities.SiteSettings.create({ key, value: valueStr, category: 'stats' });
         }
       });
       return Promise.all(promises);
